@@ -1,10 +1,16 @@
 package br.edu.ifsul.cstsi.projetotds.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "sessoes")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Sessao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +28,5 @@ public class Sessao {
     private Filme filme;
 
     @OneToMany(mappedBy = "sessao")
-    private List<Ingresso> ingressos;}
+    private List<Ingresso> ingressos;
+}
