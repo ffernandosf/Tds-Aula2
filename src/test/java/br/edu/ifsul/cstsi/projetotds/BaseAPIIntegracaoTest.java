@@ -29,11 +29,11 @@ public abstract class BaseAPIIntegracaoTest {
     private String jwtToken;
 
     @BeforeEach
-    public void configurarAutenticacao() {
+    public void setupTest() {
         Usuario admin = (Usuario) autenticacaoService.loadUserByUsername("admin@email.com");
-        assertNotNull(admin, "Usuário admin não encontrado. Verifique o data.sql.");
+        assertNotNull(admin);
         jwtToken = tokenService.geraToken(admin);
-        assertNotNull(jwtToken, "Token JWT não foi gerado.");
+        assertNotNull(jwtToken);
     }
 
     protected HttpHeaders getHeaders() {
@@ -48,14 +48,16 @@ public abstract class BaseAPIIntegracaoTest {
     }
 
     protected <T> ResponseEntity<T> post(String url, Object body, Class<T> responseType) {
-        return rest.exchange(url, POST, new HttpEntity<>(body, getHeaders()), responseType);
+        HttpHeaders headers = getHeaders();
+        System.out.println(headers);
+        return rest.exchange(url, POST, new HttpEntity<>(body, headers), responseType);
     }
 
     protected <T> ResponseEntity<T> put(String url, Object body, Class<T> responseType) {
         return rest.exchange(url, PUT, new HttpEntity<>(body, getHeaders()), responseType);
     }
 
-    protected ResponseEntity<Void> delete(String url) {
-        return rest.exchange(url, DELETE, new HttpEntity<>(getHeaders()), Void.class);
+    protected <T> ResponseEntity<T> delete(String url, Class<T> responseType) {
+        return rest.exchange(url, DELETE, new HttpEntity<>(getHeaders()), responseType);
     }
 }

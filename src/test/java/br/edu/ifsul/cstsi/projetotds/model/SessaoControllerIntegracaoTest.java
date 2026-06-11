@@ -59,9 +59,9 @@ class SessaoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(filme.id(), response.getBody().filmeId());
         assertEquals(40.0, response.getBody().valorInteira());
 
-        delete(BASE_URL + "/" + criada.id());
-        delete("/api/v1/filmes/" + filme.id());
-        delete("/api/v1/salas/" + sala.id());
+        delete(BASE_URL + "/" + criada.id(), null);
+        delete("/api/v1/filmes/" + filme.id(), null);
+        delete("/api/v1/salas/" + sala.id(), null);
     }
 
     @Test
@@ -89,9 +89,9 @@ class SessaoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(17.50, response.getBody().valorMeia());
 
         var location = response.getHeaders().getLocation().toString();
-        delete(location);
-        delete("/api/v1/filmes/" + filme.id());
-        delete("/api/v1/salas/" + sala.id());
+        delete(location, null);
+        delete("/api/v1/filmes/" + filme.id(), null);
+        delete("/api/v1/salas/" + sala.id(), null);
     }
 
     @Test
@@ -110,9 +110,9 @@ class SessaoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(50.0, response.getBody().valorInteira());
         assertEquals(25.0, response.getBody().valorMeia());
 
-        delete(BASE_URL + "/" + criada.id());
-        delete("/api/v1/filmes/" + filme.id());
-        delete("/api/v1/salas/" + sala.id());
+        delete(BASE_URL + "/" + criada.id(), null);
+        delete("/api/v1/filmes/" + filme.id(), null);
+        delete("/api/v1/salas/" + sala.id(), null);
     }
 
     @Test
@@ -121,12 +121,12 @@ class SessaoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         var filme = criarFilme();
         var criada = criarSessao(sala.id(), filme.id());
 
-        var response = delete(BASE_URL + "/" + criada.id());
+        var response = delete(BASE_URL + "/" + criada.id(), null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(HttpStatus.NOT_FOUND, get(BASE_URL + "/" + criada.id(), SessaoDto.class).getStatusCode());
 
-        delete("/api/v1/filmes/" + filme.id());
-        delete("/api/v1/salas/" + sala.id());
+        delete("/api/v1/filmes/" + filme.id(), null);
+        delete("/api/v1/salas/" + sala.id(), null);
     }
 }

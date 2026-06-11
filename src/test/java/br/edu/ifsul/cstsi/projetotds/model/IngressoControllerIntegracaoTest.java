@@ -27,10 +27,10 @@ class IngressoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
 
     private void limparSessao(Long sessaoId) {
         var sessao = get("/api/v1/sessoes/" + sessaoId, SessaoDto.class).getBody();
-        delete("/api/v1/sessoes/" + sessaoId);
+        delete("/api/v1/sessoes/" + sessaoId, null);
         if (sessao != null) {
-            delete("/api/v1/filmes/" + sessao.filmeId());
-            delete("/api/v1/salas/" + sessao.salaId());
+            delete("/api/v1/filmes/" + sessao.filmeId(), null);
+            delete("/api/v1/salas/" + sessao.salaId(), null);
         }
     }
 
@@ -60,7 +60,7 @@ class IngressoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(1, response.getBody().tipo());
         assertEquals(sessao.id(), response.getBody().sessaoId());
 
-        delete(BASE_URL + "/" + criado.id());
+        delete(BASE_URL + "/" + criado.id(), null);
         limparSessao(sessao.id());
     }
 
@@ -85,7 +85,7 @@ class IngressoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(sessao.id(), response.getBody().sessaoId());
 
         var location = response.getHeaders().getLocation().toString();
-        delete(location);
+        delete(location, null);
         assertEquals(HttpStatus.NOT_FOUND, get(location, IngressoDto.class).getStatusCode());
         limparSessao(sessao.id());
     }
@@ -101,7 +101,7 @@ class IngressoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(2, response.getBody().tipo());
 
-        delete(BASE_URL + "/" + response.getBody().id());
+        delete(BASE_URL + "/" + response.getBody().id(), null);
         limparSessao(sessao.id());
     }
 
@@ -117,7 +117,7 @@ class IngressoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(2, response.getBody().tipo());
 
-        delete(BASE_URL + "/" + criado.id());
+        delete(BASE_URL + "/" + criado.id(), null);
         limparSessao(sessao.id());
     }
 
@@ -126,7 +126,7 @@ class IngressoControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         var sessao = prepararSessao();
         var criado = criarIngresso(sessao.id(), 1);
 
-        var response = delete(BASE_URL + "/" + criado.id());
+        var response = delete(BASE_URL + "/" + criado.id(), null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(HttpStatus.NOT_FOUND, get(BASE_URL + "/" + criado.id(), IngressoDto.class).getStatusCode());

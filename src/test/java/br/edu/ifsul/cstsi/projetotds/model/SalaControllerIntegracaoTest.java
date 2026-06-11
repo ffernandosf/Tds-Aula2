@@ -40,7 +40,7 @@ class SalaControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(10, response.getBody().nrosala());
         assertEquals(80, response.getBody().capacidade());
 
-        delete(BASE_URL + "/" + criada.id());
+        delete(BASE_URL + "/" + criada.id(), null);
     }
 
     @Test
@@ -65,7 +65,7 @@ class SalaControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         var buscada = get(location, SalaDto.class).getBody();
         assertEquals(dto.capacidade(), buscada.capacidade());
 
-        delete(location);
+        delete(location, null);
         assertEquals(HttpStatus.NOT_FOUND, get(location, SalaDto.class).getStatusCode());
     }
 
@@ -79,14 +79,14 @@ class SalaControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(100, response.getBody().capacidade());
 
-        delete(BASE_URL + "/" + criada.id());
+        delete(BASE_URL + "/" + criada.id(), null);
     }
 
     @Test
     void delete_deveRemoverSalaERetornar200() {
         var criada = criarSala(7, 60);
 
-        var response = delete(BASE_URL + "/" + criada.id());
+        var response = delete(BASE_URL + "/" + criada.id(), null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(HttpStatus.NOT_FOUND, get(BASE_URL + "/" + criada.id(), SalaDto.class).getStatusCode());

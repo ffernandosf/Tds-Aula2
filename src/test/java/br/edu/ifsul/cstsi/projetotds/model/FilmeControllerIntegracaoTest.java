@@ -41,7 +41,7 @@ class FilmeControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Oppenheimer", response.getBody().titulo());
 
-        delete(BASE_URL + "/" + criado.id());
+        delete(BASE_URL + "/" + criado.id(), null);
     }
 
     @Test
@@ -62,7 +62,7 @@ class FilmeControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertTrue(response.getBody().length > 0);
         assertEquals("Vingadores", response.getBody()[0].titulo());
 
-        delete(BASE_URL + "/" + criado.id());
+        delete(BASE_URL + "/" + criado.id(), null);
     }
 
     @Test
@@ -82,7 +82,7 @@ class FilmeControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals(dto.titulo(), buscado.titulo());
 
         // Limpeza
-        delete(location);
+        delete(location, null);
         assertEquals(HttpStatus.NOT_FOUND, get(location, FilmeDto.class).getStatusCode());
     }
 
@@ -97,14 +97,14 @@ class FilmeControllerIntegracaoTest extends BaseAPIIntegracaoTest {
         assertEquals("Titulo Atualizado", response.getBody().titulo());
         assertEquals(Time.valueOf("02:00:00"), response.getBody().duracao());
 
-        delete(BASE_URL + "/" + criado.id());
+        delete(BASE_URL + "/" + criado.id(), null);
     }
 
     @Test
     void delete_deveRemoverFilmeERetornar200() {
         var criado = criarFilme("Filme para Deletar", "01:00:00");
 
-        var response = delete(BASE_URL + "/" + criado.id());
+        var response = delete(BASE_URL + "/" + criado.id(), null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(HttpStatus.NOT_FOUND, get(BASE_URL + "/" + criado.id(), FilmeDto.class).getStatusCode());
