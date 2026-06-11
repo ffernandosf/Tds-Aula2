@@ -3,6 +3,7 @@ package br.edu.ifsul.cstsi.projetotds.autenticacao;
 import br.edu.ifsul.cstsi.projetotds.infra.security.TokenJwtDTO;
 import br.edu.ifsul.cstsi.projetotds.infra.security.TokenService;
 import br.edu.ifsul.cstsi.projetotds.usuario.Usuario;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +22,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<TokenJwtDTO> efetuaLogin(@RequestBody UsuarioAutenticacaoDTO data) {
+    public ResponseEntity<TokenJwtDTO> efetuaLogin(@RequestBody @Valid UsuarioAutenticacaoDTO data) {
         var authenticationDTO = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
         var authentication = manager.authenticate(authenticationDTO);
         var tokenJWT = tokenService.geraToken((Usuario) authentication.getPrincipal());

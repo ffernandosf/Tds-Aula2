@@ -1,5 +1,6 @@
 package br.edu.ifsul.cstsi.projetotds.model;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class SessaoController {
 
     @PostMapping
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<SessaoDto> create(@RequestBody SessaoDtoPost data, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<SessaoDto> create(@RequestBody @Valid SessaoDtoPost data, UriComponentsBuilder uriBuilder) {
         var sala = salaRepository.findById(data.salaId()).orElse(null);
         var filme = filmeRepository.findById(data.filmeId()).orElse(null);
         var sessao = new Sessao(null, data.dtSessao(), data.horSessao(), data.valorInteira(),
@@ -55,7 +56,7 @@ public class SessaoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SessaoDto> update(@PathVariable Long id, @RequestBody SessaoDtoPut data) {
+    public ResponseEntity<SessaoDto> update(@PathVariable Long id, @RequestBody @Valid SessaoDtoPut data) {
         var optional = repository.findById(id);
         if (optional.isEmpty()) return ResponseEntity.notFound().build();
         var sessao = optional.get();

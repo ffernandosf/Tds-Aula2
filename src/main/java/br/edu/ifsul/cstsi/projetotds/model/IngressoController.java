@@ -1,5 +1,6 @@
 package br.edu.ifsul.cstsi.projetotds.model;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class IngressoController {
 
     @PostMapping
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<IngressoDto> create(@RequestBody IngressoDtoPost data, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<IngressoDto> create(@RequestBody @Valid IngressoDtoPost data, UriComponentsBuilder uriBuilder) {
         var sessao = sessaoRepository.findById(data.sessaoId()).orElse(null);
         var ingresso = new Ingresso(null, data.tipo(), sessao);
         repository.save(ingresso);
@@ -44,7 +45,7 @@ public class IngressoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<IngressoDto> update(@PathVariable Long id, @RequestBody IngressoDtoPut data) {
+    public ResponseEntity<IngressoDto> update(@PathVariable Long id, @RequestBody @Valid IngressoDtoPut data) {
         var optional = repository.findById(id);
         if (optional.isEmpty()) return ResponseEntity.notFound().build();
         var ingresso = optional.get();

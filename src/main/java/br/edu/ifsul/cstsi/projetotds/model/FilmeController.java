@@ -1,5 +1,6 @@
 package br.edu.ifsul.cstsi.projetotds.model;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class FilmeController {
 
     @PostMapping
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<FilmeDto> create(@RequestBody FilmeDtoPost data, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<FilmeDto> create(@RequestBody @Valid FilmeDtoPost data, UriComponentsBuilder uriBuilder) {
         var filme = new Filme(null, data.titulo(), data.duracao());
         repository.save(filme);
         var uri = uriBuilder.path("/api/v1/filmes/{id}").buildAndExpand(filme.getId()).toUri();
@@ -48,7 +49,7 @@ public class FilmeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FilmeDto> update(@PathVariable Long id, @RequestBody FilmeDtoPut data) {
+    public ResponseEntity<FilmeDto> update(@PathVariable Long id, @RequestBody @Valid FilmeDtoPut data) {
         var optional = repository.findById(id);
         if (optional.isEmpty()) return ResponseEntity.notFound().build();
         var filme = optional.get();
